@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 
-// Definindo as interfaces para os tipos de dados
+
 interface TaximeterState {
   isRunning: boolean;
   currentFare: number;
@@ -162,13 +162,13 @@ const TaximeterApp: React.FC = () => {
           <Text style={styles.headerText}>Taxímetro</Text>
         </View>
 
-        {/* Exibição do valor da corrida */}
+        
         <View style={styles.fareDisplay}>
           <Text style={styles.fareLabel}>Valor da Corrida:</Text>
           <Text style={styles.fareValue}>R$ {currentFare.toFixed(2).replace('.', ',')}</Text>
         </View>
 
-        {/* Informações da corrida */}
+        
         <View style={styles.infoContainer}>
           <Text style={styles.infoText}>Distância: {distanceKm.toFixed(2).replace('.', ',')} km</Text>
           <Text style={styles.infoText}>Tempo Total: {formatTime(timeElapsedSeconds)}</Text>
@@ -177,7 +177,7 @@ const TaximeterApp: React.FC = () => {
           <Text style={styles.infoText}>Status: {isRunning ? (isCarMoving ? 'Rodando' : 'Parado no Trânsito') : 'Livre'}</Text>
         </View>
 
-        {/* Controles da corrida */}
+        
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={[styles.button, isRunning ? styles.buttonStop : styles.buttonStart]}
@@ -210,7 +210,7 @@ const TaximeterApp: React.FC = () => {
           </TouchableOpacity>
         </View>
 
-        {/* Configurações de tarifa */}
+        
         <View style={styles.settingsContainer}>
           <Text style={styles.settingsTitle}>Configurações de Tarifa</Text>
           <View style={styles.settingRow}>
@@ -255,12 +255,12 @@ const TaximeterApp: React.FC = () => {
           </View>
         </View>
 
-        {/* Modal de Confirmação de Reinício */}
+        
         <Modal
           animationType="fade"
           transparent={true}
           visible={showResetModal}
-          onRequestClose={cancelReset} // Para Android, lida com o botão de voltar
+          onRequestClose={cancelReset} 
         >
           <View style={styles.modalOverlay}>
             <View style={styles.modalContent}>
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    elevation: 8, // For Android shadow
+    elevation: 8, 
   },
   fareLabel: {
     fontSize: 18,
@@ -375,22 +375,22 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   buttonStart: {
-    backgroundColor: '#27ae60', // Verde
+    backgroundColor: '#27ae60', 
   },
   buttonStop: {
-    backgroundColor: '#e74c3c', // Vermelho
+    backgroundColor: '#e74c3c', 
   },
   buttonToggleBand: {
-    backgroundColor: '#3498db', // Azul
+    backgroundColor: '#3498db',
   },
   buttonSimulateStop: {
-    backgroundColor: '#f39c12', // Laranja
+    backgroundColor: '#f39c12', 
   },
   buttonSimulateMove: {
-    backgroundColor: '#1abc9c', // Turquesa
+    backgroundColor: '#1abc9c', 
   },
   buttonReset: {
-    backgroundColor: '#95a5a6', // Cinza
+    backgroundColor: '#95a5a6', 
   },
   settingsContainer: {
     backgroundColor: '#ffffff',
@@ -491,10 +491,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   modalCancel: {
-    backgroundColor: '#95a5a6', // Cinza
+    backgroundColor: '#95a5a6',
   },
   modalConfirm: {
-    backgroundColor: '#e74c3c', // Vermelho
+    backgroundColor: '#e74c3c',
   },
 });
 
