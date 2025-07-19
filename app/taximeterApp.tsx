@@ -159,7 +159,7 @@ const TaximeterApp: React.FC = () => {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.header}>
-          <Text style={styles.headerText}>Taxímetro Simulado</Text>
+          <Text style={styles.headerText}>Taxímetro</Text>
         </View>
 
         {/* Exibição do valor da corrida */}
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f0f4f8',
+    backgroundColor: '#fccb42',
   },
   header: {
     marginBottom: 30,
@@ -330,7 +330,7 @@ const styles = StyleSheet.create({
   fareValue: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#27ae60',
+    color: 'black',
   },
   infoContainer: {
     backgroundColor: '#ffffff',
