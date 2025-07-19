@@ -28,39 +28,39 @@ interface TaximeterState {
 }
 
 const TaximeterApp: React.FC = () => {
-  // Variáveis de estado para o taxímetro
-  const [isRunning, setIsRunning] = useState<boolean>(false); // Indica se a corrida está em andamento
-  const [currentFare, setCurrentFare] = useState<number>(0); // Valor atual da corrida
-  const [distanceKm, setDistanceKm] = useState<number>(0); // Distância percorrida em km (simulada)
-  const [timeElapsedSeconds, setTimeElapsedSeconds] = useState<number>(0); // Tempo total da corrida em segundos
-  const [timeStoppedSeconds, setTimeStoppedSeconds] = useState<number>(0); // Tempo parado em segundos
-  const [isCarMoving, setIsCarMoving] = useState<boolean>(true); // Simula se o carro está em movimento ou parado
-  const [showResetModal, setShowResetModal] = useState<boolean>(false); // Estado para controlar a visibilidade do modal
+  // Variáveis do taxímetro
+  const [isRunning, setIsRunning] = useState<boolean>(false); 
+  const [currentFare, setCurrentFare] = useState<number>(0); 
+  const [distanceKm, setDistanceKm] = useState<number>(0); 
+  const [timeElapsedSeconds, setTimeElapsedSeconds] = useState<number>(0); 
+  const [timeStoppedSeconds, setTimeStoppedSeconds] = useState<number>(0); 
+  const [isCarMoving, setIsCarMoving] = useState<boolean>(true); 
+  const [showResetModal, setShowResetModal] = useState<boolean>(false); 
 
   // Configurações de tarifa
-  const [initialFare, setInitialFare] = useState<string>('5.00'); // Valor da bandeirada
-  const [farePerKmBand1, setFarePerKmBand1] = useState<string>('2.50'); // Valor por km na Bandeira 1
-  const [farePerKmBand2, setFarePerKmBand2] = useState<string>('3.20'); // Valor por km na Bandeira 2
-  const [farePerMinuteStopped, setFarePerMinuteStopped] = useState<string>('0.50'); // Valor por minuto parado
-  const [currentBand, setCurrentBand] = useState<number>(1); // Bandeira atual (1 ou 2)
+  const [initialFare, setInitialFare] = useState<string>('5.00'); 
+  const [farePerKmBand1, setFarePerKmBand1] = useState<string>('2.50'); 
+  const [farePerKmBand2, setFarePerKmBand2] = useState<string>('3.20'); 
+  const [farePerMinuteStopped, setFarePerMinuteStopped] = useState<string>('0.50'); 
+  const [currentBand, setCurrentBand] = useState<number>(1); 
 
-  // Referência para o intervalo do timer, para poder limpá-lo
+  //intervalo do timer, para poder limpá-lo
   const intervalRef = useRef<any>(null);
 
-  // Parâmetro de simulação de velocidade (km/h)
-  const simulatedSpeedKmPerHour: number = 30; // Velocidade simulada para cálculo da distância
+  //  simulação de velocidade (km/h)
+  const simulatedSpeedKmPerHour: number = 30;
 
-  // Função auxiliar para converter strings de entrada (com vírgula) para números float
+  // converter  (com vírgula) para números 
   const getParsedFare = (value: string): number => {
-    // Substitui vírgula por ponto para parseFloat e retorna 0 se for inválido
+    // Substitui vírgula por ponto  e retorna 0 se for inválido
     const parsed = parseFloat(value.replace(',', '.'));
-    return isNaN(parsed) ? 0 : parsed; // Garante que retorne 0 para entradas inválidas
+    return isNaN(parsed) ? 0 : parsed; //  retorna 0 para entradas inválidas
   };
 
-  // Efeito principal para o timer da corrida
+  //  timer da corrida
   useEffect(() => {
     if (isRunning) {
-      // Inicia um intervalo que roda a cada segundo
+      
       intervalRef.current = setInterval(() => {
         setTimeElapsedSeconds(prevTime => prevTime + 1); // Incrementa o tempo total
 
@@ -72,64 +72,63 @@ const TaximeterApp: React.FC = () => {
           // Se o carro estiver parado, incrementa o tempo parado
           setTimeStoppedSeconds(prevTime => prevTime + 1);
         }
-      }, 1000); // Atualiza a cada 1 segundo
+      }, 1000); 
     } else {
-      // Se a corrida não estiver rodando, limpa o intervalo
+      
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     }
 
-    // Função de limpeza: será executada quando o componente for desmontado
-    // ou quando 'isRunning' mudar para 'false'
+    
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isRunning, isCarMoving]); // Dependências: re-executa se 'isRunning' ou 'isCarMoving' mudar
+  }, [isRunning, isCarMoving]); 
 
-  // Efeito para calcular o valor da corrida sempre que as variáveis relevantes mudarem
+
   useEffect(() => {
     const parsedInitialFare: number = getParsedFare(initialFare);
-    // Seleciona a tarifa por km baseada na bandeira atual
+    // Seleciona por km baseada na bandeira atual
     const parsedFarePerKm: number = currentBand === 1 ? getParsedFare(farePerKmBand1) : getParsedFare(farePerKmBand2);
     const parsedFarePerMinuteStopped: number = getParsedFare(farePerMinuteStopped);
 
-    // Calcula o valor da corrida com base na distância e tempo parado
+    // Calcula o valor da corrida com  distância e tempo parado
     const fareFromDistance: number = distanceKm * parsedFarePerKm;
     const fareFromTimeStopped: number = (timeStoppedSeconds / 60) * parsedFarePerMinuteStopped;
 
     // Atualiza o valor total da corrida
     setCurrentFare(parsedInitialFare + fareFromDistance + fareFromTimeStopped);
-  }, [distanceKm, timeStoppedSeconds, currentBand, initialFare, farePerKmBand1, farePerKmBand2, farePerMinuteStopped]); // Dependências
+  }, [distanceKm, timeStoppedSeconds, currentBand, initialFare, farePerKmBand1, farePerKmBand2, farePerMinuteStopped]); 
 
-  // Lida com o botão de Iniciar/Parar a corrida
+  //  botão de Iniciar/Parar a corrida
   const handleStartStop = (): void => {
-    // Se a corrida não estiver rodando e o valor for 0, define a bandeirada inicial
+    //  define a bandeirada inicial
     if (!isRunning && currentFare === 0) {
       setCurrentFare(getParsedFare(initialFare));
     }
-    setIsRunning(prev => !prev); // Alterna o estado de 'isRunning'
+    setIsRunning(prev => !prev); 
   };
 
-  // Lida com o botão de Reiniciar a corrida
+  // botão de Reiniciar a corrida
   const handleReset = (): void => {
-    setShowResetModal(true); // Mostra o modal de confirmação
+    setShowResetModal(true); 
   };
 
-  // Confirma o reinício da corrida
+  // reinício da corrida
   const confirmReset = (): void => {
     if (intervalRef.current) {
-      clearInterval(intervalRef.current); // Limpa o timer
+      clearInterval(intervalRef.current); 
     }
     setIsRunning(false); // Para a corrida
     setCurrentFare(0); // Zera o valor
     setDistanceKm(0); // Zera a distância
     setTimeElapsedSeconds(0); // Zera o tempo total
     setTimeStoppedSeconds(0); // Zera o tempo parado
-    setIsCarMoving(true); // Reseta o estado de movimento para "movendo"
-    setCurrentBand(1); // Reseta para Bandeira 1
+    setIsCarMoving(true); //  estado de movimento 
+    setCurrentBand(1); // Bandeira 1
     setShowResetModal(false); // Esconde o modal
   };
 
@@ -138,17 +137,17 @@ const TaximeterApp: React.FC = () => {
     setShowResetModal(false); // Esconde o modal
   };
 
-  // Lida com o botão de Mudar Bandeira
+  //botão de Mudar Bandeira
   const handleToggleBand = (): void => {
     setCurrentBand(prevBand => (prevBand === 1 ? 2 : 1)); // Alterna entre Bandeira 1 e 2
   };
 
   // Lida com o botão de Simular Movimento/Parada
   const handleToggleMovement = (): void => {
-    setIsCarMoving(prev => !prev); // Alterna o estado de movimento do carro
+    setIsCarMoving(prev => !prev); 
   };
 
-  // Função auxiliar para formatar o tempo (segundos para MM:SS)
+ 
   const formatTime = (totalSeconds: number): string => {
     const minutes: number = Math.floor(totalSeconds / 60);
     const seconds: number = totalSeconds % 60;
