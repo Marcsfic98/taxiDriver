@@ -291,7 +291,7 @@ const TaximeterApp: React.FC = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#f0f4f8', // Cor de fundo suave
+    backgroundColor: '#fccb42',
   },
   container: {
     flexGrow: 1,
